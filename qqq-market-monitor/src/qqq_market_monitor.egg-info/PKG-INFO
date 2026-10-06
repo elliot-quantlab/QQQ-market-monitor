@@ -1,9 +1,0 @@
-Metadata-Version: 2.4
-Name: qqq-market-monitor
-Version: 1.0.0
-Summary: Automated QQQ market briefing and rule-based risk monitoring system
-Requires-Python: >=3.11
-License-File: LICENSE
-Requires-Dist: pandas<3.0,>=2.0
-Requires-Dist: yfinance<1.0,>=0.2.40
-Dynamic: license-file
