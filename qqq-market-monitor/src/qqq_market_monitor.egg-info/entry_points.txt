@@ -1,0 +1,2 @@
+[console_scripts]
+qqq-market-monitor = qqq_monitor.main:main
