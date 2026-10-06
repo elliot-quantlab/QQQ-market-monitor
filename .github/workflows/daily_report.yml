@@ -1,0 +1,42 @@
+name: Daily QQQ Market Report
+
+on:
+  schedule:
+    # GitHub Actions uses UTC. 02:00 UTC = 10:00 Asia/Shanghai.
+    - cron: "0 2 * * 1-5"
+  workflow_dispatch:
+
+jobs:
+  run-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      RECEIVER_EMAILS: ${{ secrets.RECEIVER_EMAILS }}
+      DRY_RUN: "false"
+      REPORT_TIMEZONE: Asia/Shanghai
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install .
+
+      - name: Run market report
+        run: python -m qqq_monitor.main
+
+      - name: Upload generated report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qqq-market-report-${{ github.run_number }}
+          path: output/*.html
+          if-no-files-found: ignore
