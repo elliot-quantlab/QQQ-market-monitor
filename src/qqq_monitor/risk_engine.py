@@ -13,9 +13,12 @@ def assess_risk(price: float, indicators: Indicators) -> RiskAssessment:
     elif rsi is not None and rsi <= 30:
         score += 2
         signals.append(f"RSI {rsi:.2f}，处于相对低位区间")
-    elif rsi is not None and (rsi >= 60 or rsi <= 40):
+    elif rsi is not None and rsi >= 60:
         score += 1
-        signals.append(f"RSI {rsi:.2f}，市场动量偏强或偏弱")
+        signals.append(f"RSI {rsi:.2f}，市场动量偏强，接近70关注线")
+    elif rsi is not None and rsi <= 40:
+        score += 1
+        signals.append(f"RSI {rsi:.2f}，市场动量偏弱，接近30关注线")
 
     if indicators.sma_200 is not None and price < indicators.sma_200:
         score += 1
